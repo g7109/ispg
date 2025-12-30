@@ -1,0 +1,610 @@
+{
+  "nodes": {
+    "Comment": {
+      "label": "Comment",
+      "csv": "dynamic/comment_0_0.csv",
+      "delimiter": "|",
+      "id_column": "id",
+      "properties": [
+        "id",
+        "creationDate",
+        "locationIP",
+        "browserUsed",
+        "content",
+        "length"
+      ]
+    },
+    "Forum": {
+      "label": "Forum",
+      "csv": "dynamic/forum_0_0.csv",
+      "delimiter": "|",
+      "id_column": "id",
+      "properties": [
+        "id",
+        "title",
+        "creationDate"
+      ]
+    },
+    "Message": {
+      "label": "Message",
+      "csv": "dynamic/message_0_0.csv",
+      "delimiter": "|",
+      "id_column": "id",
+      "properties": [
+        "id",
+        "imageFile",
+        "creationDate",
+        "locationIP",
+        "browserUsed",
+        "language",
+        "content",
+        "length"
+      ]
+    },
+    "Person": {
+      "label": "Person",
+      "csv": "dynamic/person_0_0.csv",
+      "delimiter": "|",
+      "id_column": "id",
+      "properties": [
+        "id",
+        "firstName",
+        "lastName",
+        "gender",
+        "birthday",
+        "creationDate",
+        "locationIP",
+        "browserUsed",
+        "language",
+        "email"
+      ]
+    },
+    "Post": {
+      "label": "Post",
+      "csv": "dynamic/post_0_0.csv",
+      "delimiter": "|",
+      "id_column": "id",
+      "properties": [
+        "id",
+        "imageFile",
+        "creationDate",
+        "locationIP",
+        "browserUsed",
+        "language",
+        "content",
+        "length"
+      ]
+    },
+    "Organisation": {
+      "label": "Organisation",
+      "csv": "static/organisation_0_0.csv",
+      "delimiter": "|",
+      "id_column": "id",
+      "properties": [
+        "id",
+        "type",
+        "name",
+        "url"
+      ]
+    },
+    "Place": {
+      "label": "Place",
+      "csv": "static/place_0_0.csv",
+      "delimiter": "|",
+      "id_column": "id",
+      "properties": [
+        "id",
+        "name",
+        "url",
+        "type"
+      ]
+    },
+    "Tag": {
+      "label": "Tag",
+      "csv": "static/tag_0_0.csv",
+      "delimiter": "|",
+      "id_column": "id",
+      "properties": [
+        "id",
+        "name",
+        "url"
+      ]
+    },
+    "TagClass": {
+      "label": "TagClass",
+      "csv": "static/tagclass_0_0.csv",
+      "delimiter": "|",
+      "id_column": "id",
+      "properties": [
+        "id",
+        "name",
+        "url"
+      ]
+    }
+  },
+  "relationships": {
+    "comment_hasCreator_person": {
+      "type": "HasCreator",
+      "csv": "dynamic/comment_hasCreator_person_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Comment",
+        "column": "Comment.id"
+      },
+      "target": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "properties": [
+        "Comment.id",
+        "Person.id"
+      ]
+    },
+    "comment_hasTag_tag": {
+      "type": "HasTag",
+      "csv": "dynamic/comment_hasTag_tag_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Comment",
+        "column": "Comment.id"
+      },
+      "target": {
+        "label": "Tag",
+        "column": "Tag.id"
+      },
+      "properties": [
+        "Comment.id",
+        "Tag.id"
+      ]
+    },
+    "comment_isLocatedIn_place": {
+      "type": "IsLocatedIn",
+      "csv": "dynamic/comment_isLocatedIn_place_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Comment",
+        "column": "Comment.id"
+      },
+      "target": {
+        "label": "Place",
+        "column": "Place.id"
+      },
+      "properties": [
+        "Comment.id",
+        "Place.id"
+      ]
+    },
+    "comment_replyOf_comment": {
+      "type": "ReplyOf",
+      "csv": "dynamic/comment_replyOf_comment_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Comment",
+        "column": "Comment.id"
+      },
+      "target": {
+        "label": "Comment",
+        "column": "Comment.id__1"
+      },
+      "properties": [
+        "Comment.id",
+        "Comment.id__1"
+      ]
+    },
+    "comment_replyOf_message": {
+      "type": "ReplyOf",
+      "csv": "dynamic/comment_replyOf_message_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Comment",
+        "column": "Comment.id"
+      },
+      "target": {
+        "label": "Message",
+        "column": "Comment.id__1"
+      },
+      "properties": [
+        "Comment.id",
+        "Comment.id__1"
+      ]
+    },
+    "comment_replyOf_post": {
+      "type": "ReplyOf",
+      "csv": "dynamic/comment_replyOf_post_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Comment",
+        "column": "Comment.id"
+      },
+      "target": {
+        "label": "Post",
+        "column": "Post.id"
+      },
+      "properties": [
+        "Comment.id",
+        "Post.id"
+      ]
+    },
+    "forum_containerOf_post": {
+      "type": "ContainerOf",
+      "csv": "dynamic/forum_containerOf_post_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Forum",
+        "column": "Forum.id"
+      },
+      "target": {
+        "label": "Post",
+        "column": "Post.id"
+      },
+      "properties": [
+        "Forum.id",
+        "Post.id"
+      ]
+    },
+    "forum_hasMember_person": {
+      "type": "HasMember",
+      "csv": "dynamic/forum_hasMember_person_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Forum",
+        "column": "Forum.id"
+      },
+      "target": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "properties": [
+        "Forum.id",
+        "Person.id",
+        "joinDate"
+      ]
+    },
+    "forum_hasModerator_person": {
+      "type": "HasModerator",
+      "csv": "dynamic/forum_hasModerator_person_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Forum",
+        "column": "Forum.id"
+      },
+      "target": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "properties": [
+        "Forum.id",
+        "Person.id"
+      ]
+    },
+    "forum_hasTag_tag": {
+      "type": "HasTag",
+      "csv": "dynamic/forum_hasTag_tag_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Forum",
+        "column": "Forum.id"
+      },
+      "target": {
+        "label": "Tag",
+        "column": "Tag.id"
+      },
+      "properties": [
+        "Forum.id",
+        "Tag.id"
+      ]
+    },
+    "message_hasCreator_person": {
+      "type": "HasCreator",
+      "csv": "dynamic/message_hasCreator_person_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Message",
+        "column": "Post.id"
+      },
+      "target": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "properties": [
+        "Post.id",
+        "Person.id"
+      ]
+    },
+    "message_hasTag_tag": {
+      "type": "HasTag",
+      "csv": "dynamic/message_hasTag_tag_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Message",
+        "column": "Post.id"
+      },
+      "target": {
+        "label": "Tag",
+        "column": "Tag.id"
+      },
+      "properties": [
+        "Post.id",
+        "Tag.id"
+      ]
+    },
+    "message_isLocatedIn_place": {
+      "type": "IsLocatedIn",
+      "csv": "dynamic/message_isLocatedIn_place_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Message",
+        "column": "Post.id"
+      },
+      "target": {
+        "label": "Place",
+        "column": "Place.id"
+      },
+      "properties": [
+        "Post.id",
+        "Place.id"
+      ]
+    },
+    "person_hasInterest_tag": {
+      "type": "HasInterest",
+      "csv": "dynamic/person_hasInterest_tag_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "target": {
+        "label": "Tag",
+        "column": "Tag.id"
+      },
+      "properties": [
+        "Person.id",
+        "Tag.id"
+      ]
+    },
+    "person_isLocatedIn_place": {
+      "type": "IsLocatedIn",
+      "csv": "dynamic/person_isLocatedIn_place_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "target": {
+        "label": "Place",
+        "column": "Place.id"
+      },
+      "properties": [
+        "Person.id",
+        "Place.id"
+      ]
+    },
+    "person_knows_person": {
+      "type": "Knows",
+      "csv": "dynamic/person_knows_person_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "target": {
+        "label": "Person",
+        "column": "Person.id__1"
+      },
+      "properties": [
+        "Person.id",
+        "Person.id__1",
+        "creationDate"
+      ]
+    },
+    "person_likes_comment": {
+      "type": "Likes",
+      "csv": "dynamic/person_likes_comment_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "target": {
+        "label": "Comment",
+        "column": "Comment.id"
+      },
+      "properties": [
+        "Person.id",
+        "Comment.id",
+        "creationDate"
+      ]
+    },
+    "person_likes_message": {
+      "type": "Likes",
+      "csv": "dynamic/person_likes_message_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "target": {
+        "label": "Message",
+        "column": "Post.id"
+      },
+      "properties": [
+        "Person.id",
+        "Post.id",
+        "creationDate"
+      ]
+    },
+    "person_likes_post": {
+      "type": "Likes",
+      "csv": "dynamic/person_likes_post_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "target": {
+        "label": "Post",
+        "column": "Post.id"
+      },
+      "properties": [
+        "Person.id",
+        "Post.id",
+        "creationDate"
+      ]
+    },
+    "person_studyAt_organisation": {
+      "type": "StudyAt",
+      "csv": "dynamic/person_studyAt_organisation_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "target": {
+        "label": "Organisation",
+        "column": "Organisation.id"
+      },
+      "properties": [
+        "Person.id",
+        "Organisation.id",
+        "classYear"
+      ]
+    },
+    "person_workAt_organisation": {
+      "type": "WorkAt",
+      "csv": "dynamic/person_workAt_organisation_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "target": {
+        "label": "Organisation",
+        "column": "Organisation.id"
+      },
+      "properties": [
+        "Person.id",
+        "Organisation.id",
+        "workFrom"
+      ]
+    },
+    "post_hasCreator_person": {
+      "type": "HasCreator",
+      "csv": "dynamic/post_hasCreator_person_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Post",
+        "column": "Post.id"
+      },
+      "target": {
+        "label": "Person",
+        "column": "Person.id"
+      },
+      "properties": [
+        "Post.id",
+        "Person.id"
+      ]
+    },
+    "post_hasTag_tag": {
+      "type": "HasTag",
+      "csv": "dynamic/post_hasTag_tag_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Post",
+        "column": "Post.id"
+      },
+      "target": {
+        "label": "Tag",
+        "column": "Tag.id"
+      },
+      "properties": [
+        "Post.id",
+        "Tag.id"
+      ]
+    },
+    "post_isLocatedIn_place": {
+      "type": "IsLocatedIn",
+      "csv": "dynamic/post_isLocatedIn_place_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Post",
+        "column": "Post.id"
+      },
+      "target": {
+        "label": "Place",
+        "column": "Place.id"
+      },
+      "properties": [
+        "Post.id",
+        "Place.id"
+      ]
+    },
+    "organisation_isLocatedIn_place": {
+      "type": "IsLocatedIn",
+      "csv": "static/organisation_isLocatedIn_place_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Organisation",
+        "column": "Organisation.id"
+      },
+      "target": {
+        "label": "Place",
+        "column": "Place.id"
+      },
+      "properties": [
+        "Organisation.id",
+        "Place.id"
+      ]
+    },
+    "place_isPartOf_place": {
+      "type": "IsPartOf",
+      "csv": "static/place_isPartOf_place_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Place",
+        "column": "Place.id"
+      },
+      "target": {
+        "label": "Place",
+        "column": "Place.id__1"
+      },
+      "properties": [
+        "Place.id",
+        "Place.id__1"
+      ]
+    },
+    "tag_hasType_tagclass": {
+      "type": "HasType",
+      "csv": "static/tag_hasType_tagclass_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "Tag",
+        "column": "Tag.id"
+      },
+      "target": {
+        "label": "TagClass",
+        "column": "TagClass.id"
+      },
+      "properties": [
+        "Tag.id",
+        "TagClass.id"
+      ]
+    },
+    "tagclass_isSubclassOf_tagclass": {
+      "type": "IsSubclassOf",
+      "csv": "static/tagclass_isSubclassOf_tagclass_0_0.csv",
+      "delimiter": "|",
+      "source": {
+        "label": "TagClass",
+        "column": "TagClass.id"
+      },
+      "target": {
+        "label": "TagClass",
+        "column": "TagClass.id__1"
+      },
+      "properties": [
+        "TagClass.id",
+        "TagClass.id__1"
+      ]
+    }
+  }
+}

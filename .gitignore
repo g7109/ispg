@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
+.venv/
+venv/
+
+# Editors
+.vscode/
+
+# Data / generated outputs (do not upload)
+datasets/
+graphs/
+catalogs/
+*.bincode
+*.duckdb
+*.csv
+*.tsv
+*.parquet
+*.zst
+*.tar
+*.tar.*
+*.gz
+*.bz2
+*.xz
+*.zip
+*.obj
+
+# Rust/Cargo build outputs
+target/
+**/target/
+
+# ISPG generated outputs
+ispg/**/query_filters/
+ispg/**/query_pattern/
+ispg/**/query_plan/
+ispg/**/query_plan_duckdb/
+*.plan
+**/plan_generation_time_ms.csv
+
+# IMDB dataset/plan artifacts
+ispg/imdb/imdb_small_bfs/
+ispg/imdb/imdb_small_bfs_vid/
+ispg/imdb/job/q*_filters.json
+ispg/imdb/job/query_plan_old/
+ispg/imdb/duckdb_job/JOB_query_plans/
+ispg/imdb/duckdb_job/sql_pgq_plans/
+
+# Misc
+.DS_Store
+*.log
+tmp/
