@@ -39,6 +39,9 @@ ispg/**/query_plan_duckdb/
 *.plan
 **/plan_generation_time_ms.csv
 
+# Local-only source overrides
+ispg/ldbc/ldbc_ic_compiler.py
+
 # IMDB dataset/plan artifacts
 # Keep the directory visible on GitHub via a placeholder file.
 ispg/imdb/**
