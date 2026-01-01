@@ -40,6 +40,7 @@ ispg/**/query_plan_duckdb/
 **/plan_generation_time_ms.csv
 
 # IMDB dataset/plan artifacts
+ispg/imdb/
 ispg/imdb/imdb_small_bfs/
 ispg/imdb/imdb_small_bfs_vid/
 ispg/imdb/job/q*_filters.json
