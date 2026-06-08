@@ -1,86 +1,126 @@
 # ISPG
-This repository contains the ISPG query plan generator (built on top of GLogS estimates).
 
-## Project Structure
+ISPG is a cost-driven query plan generator for SQL/PGQ (SPJM) queries, built on top of [GLogS](https://github.com/TatianaJin/glogs) structural cardinality estimates. It supports the LDBC SNB interactive-complex (IC) benchmark and the IMDB JOB benchmark.
+
+## Repository layout
+
 ```
 .
-├── README.md
-├── requirements.txt
-├── ispg/                   # ISPG code (IMDB + LDBC)
-├── glogs/                  # GLogS source code (build required binaries)
-├── scripts/glogs/          # wrapper scripts (estimate.sh)
-├── patterns/job/           # JOB patterns (used by IMDB optimizer)
-└── schemas/                # schemas used by graph serialization
+├── setup.sh                  # One-shot deployment script
+├── requirements.txt          # Python dependencies (duckdb, sqlglot)
+├── glogs/                    # GLogS source (Rust) — do not modify
+├── scripts/glogs/
+│   └── estimate.sh           # Thin shell wrapper around pattern_count
+├── schemas/
+│   └── dummy_schema.json     # Minimal GLogS storage schema
+├── catalogs/
+│   └── ldbc_small/glogs/
+│       └── ldbc_sf0.003.bincode   # Pre-built LDBC catalog (committed)
+├── patterns/job/             # JOB GLogS pattern definitions
+└── ispg/
+    ├── core/
+    │   └── estimator.py      # Shared GLogsEstimator + SchemaInfo
+    ├── ldbc/
+    │   ├── ic/
+    │   │   └── ldbc_query_optimizer.py   # LDBC IC plan generator (main entry)
+    │   ├── ldbc_ic_compiler.py           # Compiles SQL/PGQ → filter JSON
+    │   ├── query_filters/                # Pre-computed per-query selectivities
+    │   ├── query_pattern/                # Per-query MATCH/SQL pattern definitions
+    │   └── query_plan/                   # Generated plan output
+    └── imdb/
+        └── job/
+            ├── job_query_optimizer.py    # JOB plan generator
+            ├── imdb_job_query_compiler.py
+            ├── query_filters/
+            └── query_plan/
 ```
 
-## Environment
-1. Ubuntu 22.04 or newer.
-2. Make sure you have the following packages installed:
-- openjdk-8-jdk
-- protobuf-compiler
-- build-essential
-- clang
-- cmake
-- python3-pip
-- uuid
-3. Make sure you have Rust installed (see https://www.rust-lang.org/tools/install for more details)
-4. Make sure you have set up and activate a python virtual environment:
+## Quick start (fresh environment)
+
+### 1  Prerequisites
+
+| Tool | Minimum version | Notes |
+|------|-----------------|-------|
+| Python | 3.10 | `python3 --version` |
+| Rust / Cargo | stable | `curl https://sh.rustup.rs -sSf \| sh` |
+
+Ubuntu packages needed to build GLogS:
 ```bash
-$ python3 -m venv .venv
-$ source .venv/bin/activate
-$ pip install -r requirements.txt
-
-# (Optional) open a DuckDB file if you need it
-$ ~/.duckdb/cli/latest/duckdb imdb_pgq.duckdb
+sudo apt-get install -y build-essential clang cmake protobuf-compiler uuid-dev openjdk-8-jdk
 ```
-5. Make sure you have Julia installed (see https://julialang.org/downloads/ for more details)
 
-## Get Started
-This section explains how to build GLogS binaries and generate the catalogs required by ISPG.
+### 2  Run the deployment script
 
-### 1) Build GLogS (required)
 ```bash
-$ cd glogs/ir
-$ cargo build -r
-$ cd ../..
+cd <repo-root>
+bash setup.sh
 ```
 
-After this step, you should have these binaries:
-- glogs/ir/target/release/pattern_count
-- glogs/ir/target/release/build_graph
-- glogs/ir/target/release/build_catalog
+This will:
+1. Build the GLogS Rust binaries (`glogs/ir/cargo build --release`)
+2. Create a Python virtual environment (`.venv/`)
+3. Install Python dependencies (`duckdb`, `sqlglot`)
+4. Verify the pre-built LDBC catalog
 
-### 2) Generate LDBC GLogS graph + catalog
-Prepare the input dataset directory:
-- datasets/ldbc/sf0.003_vid
+### 3  Run the LDBC IC optimizer
+
+```bash
+source .venv/bin/activate
+
+# Generate plans for all 12 IC queries:
+python ispg/ldbc/ic/ldbc_query_optimizer.py --all
+
+# Generate a plan for a single query:
+python ispg/ldbc/ic/ldbc_query_optimizer.py --query ic-1
+```
+
+Plans are written to `ispg/ldbc/query_plan/ic-*_ispg.plan`.
+
+### 4  Run the IMDB JOB optimizer
+
+```bash
+python ispg/imdb/job/job_query_optimizer.py --all
+```
+
+Plans are written to `ispg/imdb/job/query_plan/`.
+
+## Building the LDBC catalog from scratch
+
+> **Skip this step** if you are using the pre-committed catalog at  
+> `catalogs/ldbc_small/glogs/ldbc_sf0.003.bincode`.
+
+Prepare the input data:
+```
+datasets/ldbc/sf0.003_vid/   ← flattened LDBC SF0.003 with re-assigned vertex IDs
+```
 
 Then run:
 ```bash
-$ bash ispg/ldbc/build_ldbc_small_graph.sh 0.003
-$ bash ispg/ldbc/build_ldbc_small_catalog.sh 0.003 32
+bash ispg/ldbc/build_ldbc_small_graph.sh 0.003
+bash ispg/ldbc/build_ldbc_small_catalog.sh 0.003 32
 ```
 
-This should produce:
-- graphs/ldbc_small/glogs/ldbc_sf0.003
-- catalogs/ldbc_small/glogs/ldbc_sf0.003.bincode
+Output:
+- `graphs/ldbc_small/glogs/ldbc_sf0.003` — compiled graph
+- `catalogs/ldbc_small/glogs/ldbc_sf0.003.bincode` — GLogS catalog
 
-### 3) Run LDBC ISPG optimizer
+## Regenerating query filter / pattern JSON
+
+The `query_filters/` and `query_pattern/` directories are pre-computed and
+committed. To regenerate them from raw SQL/PGQ source (requires the LDBC SF1
+dataset at `datasets/ldbc/sf1/`):
+
 ```bash
-$ python ispg/ldbc/ic/ldbc_query_optimizer.py --query ic-1
-# or generate all IC plans:
-$ python ispg/ldbc/ic/ldbc_query_optimizer.py --all
+python ispg/ldbc/ldbc_ic_compiler.py --all
 ```
 
-Plans are written to:
-- ispg/ldbc/query_plan/
+## Key optimizer flags
 
-### 4) (Optional) IMDB pipeline (graph + catalog)
-If you want to run the IMDB components, prepare:
-- datasets/imdb/imdb (processed IMDB graph-style CSVs)
-
-Then you can run:
-```bash
-$ bash ispg/imdb/build_imdb_small_graph.sh
-$ bash ispg/imdb/build_imdb_small_catalog.sh 32
-```
-
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--query` | — | Query name(s) to optimize, e.g. `ic-1` |
+| `--all` | off | Optimize all queries found in the filter directory |
+| `--glogs` | `catalogs/ldbc_small/glogs/ldbc_sf0.003.bincode` | GLogS catalog path (relative to repo root) |
+| `--script` | `scripts/glogs/estimate.sh` | GLogS estimate wrapper script |
+| `--cost-scale` | `0.1` | Multiplicative cost scaling factor |
+| `--knows-alpha` | `-0.5` | Power-law correction for `Person_knows_Person` edges |

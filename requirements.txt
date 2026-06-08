@@ -1,2 +1,2 @@
-duckdb
-sqlglot
+duckdb>=1.0.0
+sqlglot>=23.0.0

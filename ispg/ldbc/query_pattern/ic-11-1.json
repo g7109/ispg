@@ -1,0 +1,93 @@
+{
+  "query": "ic-11-1",
+  "match": {
+    "graph_alias": "g",
+    "vertices": [
+      {
+        "tag_id": 0,
+        "alias": "a",
+        "label": "Person",
+        "label_id": 4
+      },
+      {
+        "tag_id": 1,
+        "alias": "b",
+        "label": "Person",
+        "label_id": 4
+      },
+      {
+        "tag_id": 2,
+        "alias": "d",
+        "label": "Organisation",
+        "label_id": 3
+      },
+      {
+        "tag_id": 3,
+        "alias": "e",
+        "label": "Place",
+        "label_id": 5
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": 0,
+        "alias": null,
+        "type": "knows",
+        "relation_id": 16,
+        "relation_label": "Person_knows_Person",
+        "schema_source_label": "Person",
+        "schema_target_label": "Person",
+        "source_tag": 0,
+        "target_tag": 1,
+        "min_hops": 1,
+        "max_hops": 1,
+        "is_var_expand": false,
+        "is_reversed": false,
+        "is_identity": false
+      },
+      {
+        "edge_id": 1,
+        "alias": "c",
+        "type": "WORKAT",
+        "relation_id": 21,
+        "relation_label": "Person_workAt_Organisation",
+        "schema_source_label": "Person",
+        "schema_target_label": "Organisation",
+        "source_tag": 1,
+        "target_tag": 2,
+        "min_hops": 1,
+        "max_hops": 1,
+        "is_var_expand": false,
+        "is_reversed": false,
+        "is_identity": false
+      },
+      {
+        "edge_id": 2,
+        "alias": null,
+        "type": "IS_LOCATED_IN",
+        "relation_id": 13,
+        "relation_label": "Organisation_isLocatedIn_Place",
+        "schema_source_label": "Organisation",
+        "schema_target_label": "Place",
+        "source_tag": 2,
+        "target_tag": 3,
+        "min_hops": 1,
+        "max_hops": 1,
+        "is_var_expand": false,
+        "is_reversed": false,
+        "is_identity": false
+      }
+    ]
+  },
+  "sql": {
+    "vertices": [],
+    "edges": []
+  },
+  "alias_domains": {
+    "a": "match",
+    "b": "match",
+    "d": "match",
+    "e": "match",
+    "c": "match"
+  }
+}

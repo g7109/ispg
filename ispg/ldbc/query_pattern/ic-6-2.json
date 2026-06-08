@@ -1,0 +1,141 @@
+{
+  "query": "ic-6-2",
+  "match": {
+    "graph_alias": "g",
+    "vertices": [
+      {
+        "tag_id": 0,
+        "alias": "a",
+        "label": "Person",
+        "label_id": 4
+      },
+      {
+        "tag_id": 1,
+        "alias": "b",
+        "label": "Person",
+        "label_id": 4
+      },
+      {
+        "tag_id": 2,
+        "alias": "c",
+        "label": "Post",
+        "label_id": 6
+      },
+      {
+        "tag_id": 3,
+        "alias": "e",
+        "label": "Tag",
+        "label_id": 7
+      },
+      {
+        "tag_id": 5,
+        "alias": "m",
+        "label": "Person",
+        "label_id": 4
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": 0,
+        "alias": null,
+        "type": "knows",
+        "relation_id": 16,
+        "relation_label": "Person_knows_Person",
+        "schema_source_label": "Person",
+        "schema_target_label": "Person",
+        "source_tag": 0,
+        "target_tag": 5,
+        "min_hops": 1,
+        "max_hops": 1,
+        "is_var_expand": false,
+        "is_reversed": false,
+        "is_identity": false
+      },
+      {
+        "edge_id": 4,
+        "alias": null,
+        "type": "knows",
+        "relation_id": 16,
+        "relation_label": "Person_knows_Person",
+        "schema_source_label": "Person",
+        "schema_target_label": "Person",
+        "source_tag": 5,
+        "target_tag": 1,
+        "min_hops": 1,
+        "max_hops": 1,
+        "is_var_expand": false,
+        "is_reversed": false,
+        "is_identity": false
+      },
+      {
+        "edge_id": 1,
+        "alias": null,
+        "type": "HasCreated",
+        "relation_id": 23,
+        "relation_label": "Post_hasCreator_Person",
+        "schema_source_label": "Post",
+        "schema_target_label": "Person",
+        "source_tag": 1,
+        "target_tag": 2,
+        "min_hops": 1,
+        "max_hops": 1,
+        "is_var_expand": false,
+        "is_reversed": true,
+        "is_identity": false
+      },
+      {
+        "edge_id": 2,
+        "alias": null,
+        "type": "HasTag",
+        "relation_id": 24,
+        "relation_label": "Post_hasTag_Tag",
+        "schema_source_label": "Post",
+        "schema_target_label": "Tag",
+        "source_tag": 2,
+        "target_tag": 3,
+        "min_hops": 1,
+        "max_hops": 1,
+        "is_var_expand": false,
+        "is_reversed": false,
+        "is_identity": false
+      }
+    ]
+  },
+  "sql": {
+    "vertices": [
+      {
+        "tag_id": 4,
+        "alias": "t_given",
+        "label": "Tag",
+        "label_id": 7
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": 3,
+        "alias": "pht_given",
+        "type": "HasTag",
+        "relation_id": 24,
+        "relation_label": "Post_hasTag_Tag",
+        "schema_source_label": "Post",
+        "schema_target_label": "Tag",
+        "source_tag": 2,
+        "target_tag": 4,
+        "min_hops": 1,
+        "max_hops": 1,
+        "is_var_expand": false,
+        "is_reversed": false,
+        "is_identity": false
+      }
+    ]
+  },
+  "alias_domains": {
+    "a": "match",
+    "b": "match",
+    "c": "match",
+    "e": "match",
+    "pht_given": "sql",
+    "t_given": "sql",
+    "m": "match"
+  }
+}

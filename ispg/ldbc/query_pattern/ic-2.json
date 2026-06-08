@@ -1,0 +1,69 @@
+{
+  "query": "ic-2",
+  "match": {
+    "graph_alias": "gt",
+    "vertices": [
+      {
+        "tag_id": 0,
+        "alias": "a",
+        "label": "Person",
+        "label_id": 4
+      },
+      {
+        "tag_id": 1,
+        "alias": "b",
+        "label": "Person",
+        "label_id": 4
+      },
+      {
+        "tag_id": 2,
+        "alias": "c",
+        "label": "Message",
+        "label_id": 2
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": 0,
+        "alias": null,
+        "type": "knows",
+        "relation_id": 16,
+        "relation_label": "Person_knows_Person",
+        "schema_source_label": "Person",
+        "schema_target_label": "Person",
+        "source_tag": 0,
+        "target_tag": 1,
+        "min_hops": 1,
+        "max_hops": 1,
+        "is_var_expand": false,
+        "is_reversed": false,
+        "is_identity": false
+      },
+      {
+        "edge_id": 1,
+        "alias": null,
+        "type": "hasCreated",
+        "relation_id": 10,
+        "relation_label": "Message_hasCreator_Person",
+        "schema_source_label": "Message",
+        "schema_target_label": "Person",
+        "source_tag": 1,
+        "target_tag": 2,
+        "min_hops": 1,
+        "max_hops": 1,
+        "is_var_expand": false,
+        "is_reversed": true,
+        "is_identity": false
+      }
+    ]
+  },
+  "sql": {
+    "vertices": [],
+    "edges": []
+  },
+  "alias_domains": {
+    "a": "match",
+    "b": "match",
+    "c": "match"
+  }
+}
