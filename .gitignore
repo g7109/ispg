@@ -55,15 +55,9 @@ tmp/
 # Generated CSV/TSV (e.g. plan-timing reports)
 *.csv
 
-# ---------------------------------------------------------------------------
-# Required LDBC run inputs — these MUST be committed so the LDBC optimizer
-# works from a fresh clone. They are exceptions to the broad ignores above.
-# query_filters/ and query_pattern/ are plain JSON and not ignored anywhere.
-# ---------------------------------------------------------------------------
-# Bincode catalogs are large/binary and ignored by default, except the
-# pre-built LDBC small catalog used by the committed run scripts.
+# Dataset-derived statistics are kept out of the repo: GLogS catalogs and the
+# per-query selectivity filters carry data-set cardinalities. (query_pattern/
+# holds only the query definitions and stays committed.)
 *.bincode
-!catalogs/
-!catalogs/ldbc_small/
-!catalogs/ldbc_small/glogs/
-!catalogs/ldbc_small/glogs/ldbc_sf0.003.bincode
+catalogs/
+ispg/ldbc/query_filters/
