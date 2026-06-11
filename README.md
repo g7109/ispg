@@ -10,9 +10,8 @@ either side and interleave the two. Cyclic sub-patterns whose closing edge is
 written on the SPJ side are matched *inside* the matching via an EdgeCheck, so a
 triangle is enumerated within its AGM bound rather than as a binary join.
 
-It targets the LDBC SNB interactive-complex (IC) benchmark. The IMDB JOB sources
-are included for reading but are **not runnable from a clone** (the IMDB
-catalog/data are not shipped — see [IMDB JOB](#imdb-job-read-only)).
+It supports the LDBC SNB interactive-complex (IC) benchmark and the IMDB JOB
+benchmark.
 
 ## Repository layout
 
@@ -43,7 +42,7 @@ catalog/data are not shipped — see [IMDB JOB](#imdb-job-read-only)).
     │   ├── query_filters/               # Per-query selectivities + structure (committed)
     │   ├── query_pattern/               # Per-query MATCH/SQL pattern definitions (committed)
     │   └── query_plan/                  # Generated plan output (git-ignored)
-    └── imdb/job/                        # IMDB JOB optimizer (read-only, not runnable)
+    └── imdb/job/                        # IMDB JOB optimizer + compiler
 ```
 
 The optimizer's three core modules:
@@ -132,6 +131,12 @@ On the LDBC IC benchmark every query has a single strongly-selective anchor
 enumerated but never win. `ExpandInt` appears whenever a query closes a cycle
 (e.g. `ic-7`, `ic-4`, `ic-9-2`).
 
+The cost model also implements the fanout factor `fo(R')` for non-graph
+relations (APU Frequency, Def. 3; the `Orders` table of the paper's Fig. 1).
+LDBC IC contains no non-graph relations — every vertex is a graph entity and
+every edge is declared — so this branch is inert on this benchmark and the
+`Join` operator is never instantiated.
+
 ## Building the LDBC catalog from scratch
 
 > **Skip this step** if you are using the committed catalog at
@@ -162,15 +167,6 @@ regenerate them from raw SQL/PGQ source you need the local-only compiler
 ```bash
 python ispg/ldbc/ldbc_ic_compiler.py --all
 ```
-
-## IMDB JOB (read-only)
-
-`ispg/imdb/job/` contains the JOB optimizer and compiler sources, kept for
-reference. They are **not runnable from a clone**: the IMDB catalog
-(`catalogs/imdb_small/glogs/imdb_small.bincode`), schema, and per-query filters
-are not shipped, so the optimizer stops at estimator initialisation with a
-`catalog not found` error. The cost/operator logic (including `ExpandInt` /
-`EdgeCheck`) mirrors the LDBC back-end.
 
 ## Key optimizer flags
 

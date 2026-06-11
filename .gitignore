@@ -37,10 +37,8 @@ ispg/**/query_plan_duckdb/
 # Local-only source overrides (requires the LDBC SF1 dataset to run)
 ispg/ldbc/ldbc_ic_compiler.py
 
-# IMDB dataset/plan artifacts — kept off GitHub on purpose.
-# The directory stays visible via a placeholder; the IMDB optimizer source
-# (job_query_optimizer.py / imdb_job_query_compiler.py) is committed, but the
-# IMDB catalog/filters/data are not, so IMDB cannot be run from a clone.
+# IMDB large artifacts (datasets, catalogs, generated filters/plans) are kept
+# out of the repo; the IMDB optimizer/compiler sources are committed below.
 ispg/imdb/**
 !ispg/imdb/.gitkeep
 !ispg/imdb/__init__.py

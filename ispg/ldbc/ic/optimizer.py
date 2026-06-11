@@ -20,7 +20,9 @@ from ispg.ldbc.ic.plan import EdgeCheckInfo, EdgeInfo, PlanNode, VertexInfo
 ALPHA_SRC  = 1.0   # Scan / Get  : α_src  × F(Ut)
 ALPHA_EXP  = 1.0   # Expand      : α_exp  × F(Ut)  [= α_exp × F(Us) × σ_e(Θ)]
 ALPHA_CHK  = 0.1   # EdgeCheck   : α_chk  × F(Us)
-ALPHA_JOIN = 1.0   # Join / Merge: α_join × (F(U1) + F(U2))
+# Join / Merge: α_join × F(Us), "charged on the state it reads" (§V-C). For the
+# binary Merge the state read is both inputs, so this is α_join × (F(U1)+F(U2)).
+ALPHA_JOIN = 1.0
 
 
 class ISPGOptimizer:
@@ -87,14 +89,22 @@ class ISPGOptimizer:
                 f["expression"] for f in (info.get("filters") or [])
                 if f.get("expression")
             ]
+            label    = v.get("label", alias)
+            # A label not registered as a graph entity is a non-graph relation
+            # R' (Def 2); it carries a fanout instead of a GLogS estimate.
+            # LDBC IC has only graph entities, so is_relation is always False.
+            is_rel   = label not in self.schema.entity_name_to_id
+            fanout   = float(combined.get("fanout", 1.0) or 1.0) if is_rel else 1.0
             self.vertices[alias] = VertexInfo(
                 alias=alias,
                 tag_id=v["tag_id"],
-                label=v.get("label", alias),
+                label=label,
                 label_id=v.get("label_id", 0),
                 domain=v.get("domain", "match"),
                 selectivity=sel,
                 filters=filters,
+                is_relation=is_rel,
+                fanout=fanout,
             )
 
         for idx, e in enumerate(filt.get("edges", [])):
@@ -148,6 +158,10 @@ class ISPGOptimizer:
     # ── APU frequency estimation (§5.2) ──────────────────────────────────────
 
     def _glog_single(self, v: VertexInfo) -> float:
+        if v.is_relation:
+            # Non-graph relation R': frequency carried by its fanout (Def 3),
+            # with no GLogS structural estimate. (Inert on LDBC.)
+            return max(v.fanout, 1.0) * v.selectivity
         pattern = {"vertices": [{"tag_id": 0, "label_id": v.label_id}], "edges": []}
         return max(self.estimator.estimate_pattern(pattern), 1.0) * v.selectivity
 
@@ -156,9 +170,24 @@ class ISPGOptimizer:
     ) -> float:
         """GLogS structural frequency F(p') of the sub-pattern formed by the
         vertices in *covered* and the given *edges* (identity edges and edges
-        with no relation_id are excluded from the GLogS pattern; §3.3 eq 3.2)."""
-        verts  = [self.vertices[a] for a in covered]
-        closed = [e for e in edges if not e.is_identity]
+        with no relation_id are excluded from the GLogS pattern; §3.3 eq 3.2).
+
+        Non-graph relations R' and any edge touching one are excluded: they have
+        no graph structure and contribute through fanout in _F_with_edges (Def
+        3), not through GLogS. On LDBC every vertex is a graph entity, so this
+        filtering is a no-op there."""
+        verts  = [
+            self.vertices[a] for a in covered
+            if not self.vertices[a].is_relation
+        ]
+        closed = [
+            e for e in edges
+            if not e.is_identity
+            and not self.vertices[e.src_alias].is_relation
+            and not self.vertices[e.dst_alias].is_relation
+        ]
+        if not verts:
+            return 1.0
 
         cache_key = (
             frozenset(v.tag_id for v in verts),
@@ -188,14 +217,19 @@ class ISPGOptimizer:
     def _F_with_edges(
         self, covered: FrozenSet[str], edges: List[EdgeInfo]
     ) -> float:
-        """F = F_struct(covered, edges) × ∏ sel(θv|ℓ) × ∏ sel(θe|ℓ).
+        """F(U) = F(p') × ∏ sel(θv|ℓ) × ∏ sel(θe|ℓ) × ∏ fo(R'j)  (Def 3).
 
-        Only the predicates of the supplied *edges* are applied; this lets the
-        caller measure either a fully-closed sub-pattern or a single-edge
-        expansion (used for the per-edge expansion factor σ_e of §5.4)."""
+        F(p') is the GLogS structural frequency of the graph vertices; each
+        non-graph relation R' in *covered* contributes its fanout fo(R') on the
+        same footing as a vertex-expansion factor. Only the predicates of the
+        supplied *edges* are applied, so the caller may measure either a
+        fully-closed sub-pattern or a single-edge expansion (σ_e of §5.4)."""
         F = self._struct_F(covered, edges)
         for a in covered:
-            F *= self.vertices[a].selectivity
+            v = self.vertices[a]
+            F *= v.selectivity
+            if v.is_relation:
+                F *= v.fanout          # Def 3 fanout factor (inert on LDBC)
         for e in edges:
             if not e.is_identity:
                 F *= e.selectivity
