@@ -20,8 +20,7 @@ class VertexInfo:
     # A non-graph relation R' (Def 2): a relation with no key-mapping vertex
     # role, joined to a graph vertex through its key (e.g. Orders in Fig. 1).
     # It carries no GLogS structural estimate; instead it contributes its
-    # fanout fo(R') to F(U) (Def 3). LDBC IC has no such relations, so on that
-    # benchmark is_relation is always False and these fields are inert.
+    # fanout fo(R') to F(U) (Def 3).
     is_relation: bool = False
     fanout:      float = 1.0  # fo(R') along the join key
 

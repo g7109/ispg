@@ -126,16 +126,11 @@ named after the paper's algebra (Table 2.1 / §5.4):
 | `Merge` | Combine two independently built states (bushy plan) |
 | `π_A` | Final projection |
 
-On the LDBC IC benchmark every query has a single strongly-selective anchor
-(`personId`), so the least-cost plan is linear; `Merge`/bushy candidates are
-enumerated but never win. `ExpandInt` appears whenever a query closes a cycle
-(e.g. `ic-7`, `ic-4`, `ic-9-2`).
-
-The cost model also implements the fanout factor `fo(R')` for non-graph
-relations (APU Frequency, Def. 3; the `Orders` table of the paper's Fig. 1).
-LDBC IC contains no non-graph relations — every vertex is a graph entity and
-every edge is declared — so this branch is inert on this benchmark and the
-`Join` operator is never instantiated.
+`ExpandInt` appears whenever a query closes a cycle (e.g. `ic-7`, `ic-4`,
+`ic-9-2`). `Merge` builds a bushy plan by combining two independently grown
+states on the variables they share. The fanout factor `fo(R')` (APU Frequency,
+Def. 3; the `Orders` table of the paper's Fig. 1) estimates a non-graph relation
+on the same footing as a vertex-expansion factor.
 
 ## Building the LDBC catalog from scratch
 

@@ -92,7 +92,6 @@ class ISPGOptimizer:
             label    = v.get("label", alias)
             # A label not registered as a graph entity is a non-graph relation
             # R' (Def 2); it carries a fanout instead of a GLogS estimate.
-            # LDBC IC has only graph entities, so is_relation is always False.
             is_rel   = label not in self.schema.entity_name_to_id
             fanout   = float(combined.get("fanout", 1.0) or 1.0) if is_rel else 1.0
             self.vertices[alias] = VertexInfo(
@@ -160,7 +159,7 @@ class ISPGOptimizer:
     def _glog_single(self, v: VertexInfo) -> float:
         if v.is_relation:
             # Non-graph relation R': frequency carried by its fanout (Def 3),
-            # with no GLogS structural estimate. (Inert on LDBC.)
+            # with no GLogS structural estimate.
             return max(v.fanout, 1.0) * v.selectivity
         pattern = {"vertices": [{"tag_id": 0, "label_id": v.label_id}], "edges": []}
         return max(self.estimator.estimate_pattern(pattern), 1.0) * v.selectivity
@@ -174,8 +173,7 @@ class ISPGOptimizer:
 
         Non-graph relations R' and any edge touching one are excluded: they have
         no graph structure and contribute through fanout in _F_with_edges (Def
-        3), not through GLogS. On LDBC every vertex is a graph entity, so this
-        filtering is a no-op there."""
+        3), not through GLogS."""
         verts  = [
             self.vertices[a] for a in covered
             if not self.vertices[a].is_relation
@@ -229,7 +227,7 @@ class ISPGOptimizer:
             v = self.vertices[a]
             F *= v.selectivity
             if v.is_relation:
-                F *= v.fanout          # Def 3 fanout factor (inert on LDBC)
+                F *= v.fanout          # Def 3 fanout factor
         for e in edges:
             if not e.is_identity:
                 F *= e.selectivity
