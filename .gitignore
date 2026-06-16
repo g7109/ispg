@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Generated query plans (regenerate: python ispg/main.py)
+plans/
+
+# Derived relational statistics catalogs (regenerate: python ispg/build_catalog.py) -- not distributed
+ispg/catalogs/*.json
+
+# Raw datasets and build products (not distributed; see README)
+data/
+*.bincode

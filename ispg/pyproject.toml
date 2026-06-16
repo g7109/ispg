@@ -1,0 +1,8 @@
+[project]
+name = "ispg"
+version = "0.1.0"
+description = "ISPG: 交错 SPJM 查询计划生成器(ISPG 与 RelGo 两套计划对比)"
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=1.5.3",   # 仅离线重建关系统计目录(build_catalog.py / relstats.py)时需要;出计划运行时不加载
+]
