@@ -15,12 +15,12 @@ from __future__ import annotations
 
 import os
 
-from stats import _REF, GLOGS_BIN, Stats
+from stats import _PROJ_ROOT, _REF, GLOGS_BIN, Stats
 
 IMDB_GLOGS_CATALOG = os.environ.get(
     "ISPG_IMDB_GLOGS_CATALOG", os.path.join(_REF, "catalogs", "imdb", "glogs", "imdb.bincode"))
 IMDB_GLOGS_SCHEMA = os.environ.get(
-    "ISPG_IMDB_GLOGS_SCHEMA", os.path.join(_REF, "schemas", "imdb", "imdb_glogs_schema.json"))
+    "ISPG_IMDB_GLOGS_SCHEMA", os.path.join(_PROJ_ROOT, "schemas", "imdb", "imdb_glogs_schema.json"))
 IMDB_RELSTATS = os.environ.get(
     "ISPG_IMDB_RELSTATS", os.path.join(os.path.dirname(__file__), "catalogs", "imdb_relstats.json"))
 

@@ -1,0 +1,603 @@
+{
+  "entities": [
+    {
+      "columns": [],
+      "label": {
+        "id": 0,
+        "name": "Comment"
+      }
+    },
+    {
+      "columns": [],
+      "label": {
+        "id": 1,
+        "name": "Forum"
+      }
+    },
+    {
+      "columns": [],
+      "label": {
+        "id": 2,
+        "name": "Message"
+      }
+    },
+    {
+      "columns": [],
+      "label": {
+        "id": 3,
+        "name": "Organisation"
+      }
+    },
+    {
+      "columns": [],
+      "label": {
+        "id": 4,
+        "name": "Person"
+      }
+    },
+    {
+      "columns": [],
+      "label": {
+        "id": 5,
+        "name": "Place"
+      }
+    },
+    {
+      "columns": [],
+      "label": {
+        "id": 6,
+        "name": "Post"
+      }
+    },
+    {
+      "columns": [],
+      "label": {
+        "id": 7,
+        "name": "Tag"
+      }
+    },
+    {
+      "columns": [],
+      "label": {
+        "id": 8,
+        "name": "TagClass"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 0,
+            "name": "Comment"
+          },
+          "dst": {
+            "id": 4,
+            "name": "Person"
+          }
+        }
+      ],
+      "label": {
+        "id": 0,
+        "name": "Comment_hasCreator_Person"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 0,
+            "name": "Comment"
+          },
+          "dst": {
+            "id": 7,
+            "name": "Tag"
+          }
+        }
+      ],
+      "label": {
+        "id": 1,
+        "name": "Comment_hasTag_Tag"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 0,
+            "name": "Comment"
+          },
+          "dst": {
+            "id": 5,
+            "name": "Place"
+          }
+        }
+      ],
+      "label": {
+        "id": 2,
+        "name": "Comment_isLocatedIn_Place"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 0,
+            "name": "Comment"
+          },
+          "dst": {
+            "id": 0,
+            "name": "Comment"
+          }
+        }
+      ],
+      "label": {
+        "id": 3,
+        "name": "Comment_replyOf_Comment"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 0,
+            "name": "Comment"
+          },
+          "dst": {
+            "id": 2,
+            "name": "Message"
+          }
+        }
+      ],
+      "label": {
+        "id": 4,
+        "name": "Comment_replyOf_Message"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 0,
+            "name": "Comment"
+          },
+          "dst": {
+            "id": 6,
+            "name": "Post"
+          }
+        }
+      ],
+      "label": {
+        "id": 5,
+        "name": "Comment_replyOf_Post"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 1,
+            "name": "Forum"
+          },
+          "dst": {
+            "id": 6,
+            "name": "Post"
+          }
+        }
+      ],
+      "label": {
+        "id": 6,
+        "name": "Forum_containerOf_Post"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 1,
+            "name": "Forum"
+          },
+          "dst": {
+            "id": 4,
+            "name": "Person"
+          }
+        }
+      ],
+      "label": {
+        "id": 7,
+        "name": "Forum_hasMember_Person"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 1,
+            "name": "Forum"
+          },
+          "dst": {
+            "id": 4,
+            "name": "Person"
+          }
+        }
+      ],
+      "label": {
+        "id": 8,
+        "name": "Forum_hasModerator_Person"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 1,
+            "name": "Forum"
+          },
+          "dst": {
+            "id": 7,
+            "name": "Tag"
+          }
+        }
+      ],
+      "label": {
+        "id": 9,
+        "name": "Forum_hasTag_Tag"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 2,
+            "name": "Message"
+          },
+          "dst": {
+            "id": 4,
+            "name": "Person"
+          }
+        }
+      ],
+      "label": {
+        "id": 10,
+        "name": "Message_hasCreator_Person"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 2,
+            "name": "Message"
+          },
+          "dst": {
+            "id": 7,
+            "name": "Tag"
+          }
+        }
+      ],
+      "label": {
+        "id": 11,
+        "name": "Message_hasTag_Tag"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 2,
+            "name": "Message"
+          },
+          "dst": {
+            "id": 5,
+            "name": "Place"
+          }
+        }
+      ],
+      "label": {
+        "id": 12,
+        "name": "Message_isLocatedIn_Place"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 3,
+            "name": "Organisation"
+          },
+          "dst": {
+            "id": 5,
+            "name": "Place"
+          }
+        }
+      ],
+      "label": {
+        "id": 13,
+        "name": "Organisation_isLocatedIn_Place"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 4,
+            "name": "Person"
+          },
+          "dst": {
+            "id": 7,
+            "name": "Tag"
+          }
+        }
+      ],
+      "label": {
+        "id": 14,
+        "name": "Person_hasInterest_Tag"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 4,
+            "name": "Person"
+          },
+          "dst": {
+            "id": 5,
+            "name": "Place"
+          }
+        }
+      ],
+      "label": {
+        "id": 15,
+        "name": "Person_isLocatedIn_Place"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 4,
+            "name": "Person"
+          },
+          "dst": {
+            "id": 4,
+            "name": "Person"
+          }
+        }
+      ],
+      "label": {
+        "id": 16,
+        "name": "Person_knows_Person"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 4,
+            "name": "Person"
+          },
+          "dst": {
+            "id": 0,
+            "name": "Comment"
+          }
+        }
+      ],
+      "label": {
+        "id": 17,
+        "name": "Person_likes_Comment"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 4,
+            "name": "Person"
+          },
+          "dst": {
+            "id": 2,
+            "name": "Message"
+          }
+        }
+      ],
+      "label": {
+        "id": 18,
+        "name": "Person_likes_Message"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 4,
+            "name": "Person"
+          },
+          "dst": {
+            "id": 6,
+            "name": "Post"
+          }
+        }
+      ],
+      "label": {
+        "id": 19,
+        "name": "Person_likes_Post"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 4,
+            "name": "Person"
+          },
+          "dst": {
+            "id": 3,
+            "name": "Organisation"
+          }
+        }
+      ],
+      "label": {
+        "id": 20,
+        "name": "Person_studyAt_Organisation"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 4,
+            "name": "Person"
+          },
+          "dst": {
+            "id": 3,
+            "name": "Organisation"
+          }
+        }
+      ],
+      "label": {
+        "id": 21,
+        "name": "Person_workAt_Organisation"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 5,
+            "name": "Place"
+          },
+          "dst": {
+            "id": 5,
+            "name": "Place"
+          }
+        }
+      ],
+      "label": {
+        "id": 22,
+        "name": "Place_isPartOf_Place"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 6,
+            "name": "Post"
+          },
+          "dst": {
+            "id": 4,
+            "name": "Person"
+          }
+        }
+      ],
+      "label": {
+        "id": 23,
+        "name": "Post_hasCreator_Person"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 6,
+            "name": "Post"
+          },
+          "dst": {
+            "id": 7,
+            "name": "Tag"
+          }
+        }
+      ],
+      "label": {
+        "id": 24,
+        "name": "Post_hasTag_Tag"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 6,
+            "name": "Post"
+          },
+          "dst": {
+            "id": 5,
+            "name": "Place"
+          }
+        }
+      ],
+      "label": {
+        "id": 25,
+        "name": "Post_isLocatedIn_Place"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 8,
+            "name": "TagClass"
+          },
+          "dst": {
+            "id": 8,
+            "name": "TagClass"
+          }
+        }
+      ],
+      "label": {
+        "id": 26,
+        "name": "TagClass_isSubclassOf_TagClass"
+      }
+    },
+    {
+      "columns": [],
+      "entity_pairs": [
+        {
+          "src": {
+            "id": 7,
+            "name": "Tag"
+          },
+          "dst": {
+            "id": 8,
+            "name": "TagClass"
+          }
+        }
+      ],
+      "label": {
+        "id": 27,
+        "name": "Tag_hasType_TagClass"
+      }
+    }
+  ],
+  "is_table_id": true,
+  "is_column_id": false
+}

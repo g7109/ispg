@@ -27,6 +27,7 @@ ispg/                 the implementation (pure Python)
   stats_imdb.py       IMDB/JOB statistics provider
   queries_job.py      JOB queries as SPJM IR
   main.py             generate ISPG / greedy / RelGo plans into plans/<bench>/{ispg,greedy,relgo}/
+schemas/              property-graph label schemas (entity/relation label ids) for LDBC and IMDB
 ldbc query/           the original LDBC SQL/PGQ queries (reference for the IR encoding)
 job query/            the original JOB SQL/PGQ queries (reference for the IR encoding)
 ref/                  PathCE (git submodule) -- the GLogS structural-statistics backend
@@ -48,16 +49,24 @@ with per-step and cumulative cost; SPJ-side operators are marked `(SPJ, dashed)`
 
 ISPG's frequency `F(U) = F(P') * prod(sel) * prod(fo)` combines two halves:
 
-- **Structural** `F(P')` -- from **GLogS**, via the PathCE submodule `ref/`. Build GLogS and
-  the graph catalog through PathCE's scripts, e.g. for LDBC
-  `ref/scripts/glogs/build_ldbc_graph.sh` then `build_ldbc_catalog.sh`, producing
-  `ref/catalogs/ldbc/glogs/ldbc_sf0.003.bincode`. Paths can be overridden with `ISPG_GLOGS_*`.
+- **Label schema** -- the property-graph view (entity/relation label ids) lives in this
+  repository under `schemas/{ldbc,imdb}/`. It is what the SPJM IR labels resolve against, so
+  it ships with the code. The GLogS catalog must be built against this same schema.
+- **Structural** `F(P')` -- from **GLogS**, via the PathCE submodule `ref/`. Build the GLogS
+  binary and the graph catalog through PathCE's toolchain (`cd ref/glogs/ir && cargo build -r`,
+  then the `build_*_graph.sh` / `build_*_catalog.sh` scripts run with `SCHEMA_PATH` pointing at
+  this repo's `schemas/ldbc/ldbc_glogs_schema.json`), producing
+  `ref/catalogs/ldbc/glogs/ldbc_sf0.003.bincode` and `ref/glogs/ir/target/release/pattern_count`.
+  Paths can be overridden with `ISPG_GLOGS_*`.
 - **Relational** `sel`, `fo` -- a compact JSON produced by `build_catalog.py` over the raw
   dataset. Place the raw LDBC dataset under `data/ldbc/sf1` (or set `ISPG_DATA_DIR`) and run
   `python ispg/build_catalog.py`.
 
-The statistics catalogs and raw datasets are large and are produced by the steps above;
-they live under `ref/` and `data/` and are not part of this repository's source tree.
+The label schemas are part of the source tree; the GLogS binary, the `.bincode` catalogs, the
+relational statistics JSON and the raw datasets are large/derived artifacts produced by the
+steps above (under `ref/`, `ispg/catalogs/`, `data/`) and are not committed. When they are
+absent, plans are still generated with neutral statistics (relative placeholder costs); to
+reproduce real costs, build them via PathCE.
 
 ### IMDB / JOB
 

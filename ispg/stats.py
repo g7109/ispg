@@ -37,8 +37,10 @@ GLOGS_BIN = os.environ.get(
     "ISPG_GLOGS_BIN", os.path.join(_REF, "glogs", "ir", "target", "release", "pattern_count"))
 GLOGS_CATALOG = os.environ.get(
     "ISPG_GLOGS_CATALOG", os.path.join(_REF, "catalogs", "ldbc", "glogs", "ldbc_sf0.003.bincode"))
+# The label schema (entity/relation label ids of the property-graph view) is part of this
+# project. The GLogS binary and the .bincode catalog are produced through PathCE under ref/.
 GLOGS_SCHEMA = os.environ.get(
-    "ISPG_GLOGS_SCHEMA", os.path.join(_REF, "schemas", "ldbc", "ldbc_glogs_schema.json"))
+    "ISPG_GLOGS_SCHEMA", os.path.join(_PROJ_ROOT, "schemas", "ldbc", "ldbc_glogs_schema.json"))
 
 
 def _load_schema(path: str):

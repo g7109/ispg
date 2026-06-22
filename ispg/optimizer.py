@@ -346,10 +346,10 @@ class Optimizer:
             jc = ALPHA["join"] * jf
             cost += jc
             lf = {"id": nid(), "kind": "leaf", "title": "Edge", "detail": e.label,
-                  "var": None, "freq": round(jf, 3), "declared_in": "SPJ", "children": []}
+                  "var": None, "freq": round(jf, 6), "declared_in": "SPJ", "children": []}
             tree = {"id": nid(), "kind": "join", "title": "Join",
-                    "detail": f"{e.src}-[{e.label}]-{e.dst}", "freq": round(jf, 3),
-                    "step_cost": round(jc, 3), "declared_in": "SPJ", "children": [tree, lf]}
+                    "detail": f"{e.src}-[{e.label}]-{e.dst}", "freq": round(jf, 6),
+                    "step_cost": round(jc, 6), "declared_in": "SPJ", "children": [tree, lf]}
             steps.append(_node("Join", f"{e.src}-[{e.label}]-{e.dst}", frozenset(cur), jf, jc, "SPJ", "square"))
         for r in q.relations:                          # relation R' -> post-hoc Join (typical relational optimization)
             cur.add(r)
@@ -358,17 +358,17 @@ class Optimizer:
             jc = ALPHA["join"] * jf
             cost += jc
             lf = {"id": nid(), "kind": "leaf", "title": "Scan", "detail": f"{r}:{rel.label}",
-                  "var": r, "freq": round(jf, 3), "declared_in": "SPJ", "children": []}
+                  "var": r, "freq": round(jf, 6), "declared_in": "SPJ", "children": []}
             tree = {"id": nid(), "kind": "join", "title": "Join", "detail": rel.label,
-                    "freq": round(jf, 3), "step_cost": round(jc, 3), "declared_in": "SPJ",
+                    "freq": round(jf, 6), "step_cost": round(jc, 6), "declared_in": "SPJ",
                     "children": [tree, lf]}
             steps.append(_node("Join", f"{r}:{rel.label} |><| {rel.parent}", frozenset(cur), jf, jc, "SPJ", "square"))
 
         cum = 0.0
         for nd in steps:
             cum += nd["step_cost"]
-            nd["cum_cost"] = round(cum, 2)
-        return {"query": q.name + " [RelGo]", "total_cost": round(cost, 2),
+            nd["cum_cost"] = round(cum, 6)
+        return {"query": q.name + " [RelGo]", "total_cost": round(cost, 6),
                 "steps": steps, "tree": tree, "strategy": "relgo"}
 
     # graph structure of the sub-APU for a covered set
@@ -396,11 +396,11 @@ class Optimizer:
 
         def leaf(title, detail, freq, declared_in, var):
             return {"id": nid(), "kind": "leaf", "title": title, "detail": detail, "var": var,
-                    "freq": round(freq, 3), "declared_in": declared_in, "children": []}
+                    "freq": round(freq, 6), "declared_in": declared_in, "children": []}
 
         def comb(kind, title, detail, freq, cost, declared_in, children, edge=None):
-            node = {"id": nid(), "kind": kind, "title": title, "detail": detail, "freq": round(freq, 3),
-                    "step_cost": round(cost, 3), "declared_in": declared_in, "children": children}
+            node = {"id": nid(), "kind": kind, "title": title, "detail": detail, "freq": round(freq, 6),
+                    "step_cost": round(cost, 6), "declared_in": declared_in, "children": children}
             if edge is not None:
                 node["edge"] = edge
             return node
@@ -471,8 +471,8 @@ class Optimizer:
         cum = 0.0
         for nd in nodes:
             cum += nd["step_cost"]
-            nd["cum_cost"] = round(cum, 2)
-        return {"query": q.name, "total_cost": round(best[target], 2),
+            nd["cum_cost"] = round(cum, 6)
+        return {"query": q.name, "total_cost": round(best[target], 6),
                 "steps": nodes, "tree": tree,
                 "merge_considered": getattr(self, "_merge_considered", 0)}
 
@@ -494,8 +494,8 @@ def _pred_str(preds):
 
 
 def _node(op, args, S, freq, step_cost, declared_in, shape):
-    return {"op": op, "args": args, "apu": sorted(S), "freq": round(freq, 3),
-            "step_cost": round(step_cost, 3), "declared_in": declared_in, "shape": shape}
+    return {"op": op, "args": args, "apu": sorted(S), "freq": round(freq, 6),
+            "step_cost": round(step_cost, 6), "declared_in": declared_in, "shape": shape}
 
 
 def render_ascii(plan: dict) -> str:
@@ -504,7 +504,7 @@ def render_ascii(plan: dict) -> str:
         tag = {"circle": "(o)", "square": "[#]", "edge": "---"}.get(n["shape"], "   ")
         dash = "  (SPJ, dashed)" if n["declared_in"] == "SPJ" else ""
         out.append(f"  {i+1:>2}. {tag} {n['op']:<10} {n['args']:<34} "
-                   f"F={n['freq']:>12,.2f}  step={n['step_cost']:>10,.2f}  cum={n['cum_cost']:>10,.2f}{dash}")
+                   f"F={n['freq']:>16,.6f}  step={n['step_cost']:>14,.6f}  cum={n['cum_cost']:>14,.6f}{dash}")
     return "\n".join(out)
 
 

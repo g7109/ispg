@@ -1,0 +1,339 @@
+{
+    "entities": [
+        {
+            "columns": [],
+            "label": {
+                "id": 0,
+                "name": "akaName"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 1,
+                "name": "akaTitle"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 2,
+                "name": "castInfoVertex"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 3,
+                "name": "character"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 4,
+                "name": "companyName"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 5,
+                "name": "complCastInfoVertex"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 6,
+                "name": "infoVertex"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 7,
+                "name": "infoIdxVertex"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 8,
+                "name": "keyword"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 9,
+                "name": "person"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 10,
+                "name": "personInfoVertex"
+            }
+        },
+        {
+            "columns": [],
+            "label": {
+                "id": 11,
+                "name": "title"
+            }
+        }
+    ],
+    "relations": [
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 9,
+                        "name": "person"
+                    },
+                    "dst": {
+                        "id": 0,
+                        "name": "akaName"
+                    }
+                }
+            ],
+            "label": {
+                "id": 0,
+                "name": "person_akaNameEdge_akaName"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 11,
+                        "name": "title"
+                    },
+                    "dst": {
+                        "id": 1,
+                        "name": "akaTitle"
+                    }
+                }
+            ],
+            "label": {
+                "id": 1,
+                "name": "title_akaTitleEdge_akaTitle"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 2,
+                        "name": "castInfoVertex"
+                    },
+                    "dst": {
+                        "id": 9,
+                        "name": "person"
+                    }
+                }
+            ],
+            "label": {
+                "id": 2,
+                "name": "castInfoVertex_castInfoEdge_person"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 2,
+                        "name": "castInfoVertex"
+                    },
+                    "dst": {
+                        "id": 11,
+                        "name": "title"
+                    }
+                }
+            ],
+            "label": {
+                "id": 3,
+                "name": "castInfoVertex_castInfoEdge_title"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 2,
+                        "name": "castInfoVertex"
+                    },
+                    "dst": {
+                        "id": 3,
+                        "name": "character"
+                    }
+                }
+            ],
+            "label": {
+                "id": 4,
+                "name": "castInfoVertex_castInfoEdge_character"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 5,
+                        "name": "complCastInfoVertex"
+                    },
+                    "dst": {
+                        "id": 11,
+                        "name": "title"
+                    }
+                }
+            ],
+            "label": {
+                "id": 5,
+                "name": "complCastInfoVertex_complCastInfoEdge_title"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 11,
+                        "name": "title"
+                    },
+                    "dst": {
+                        "id": 11,
+                        "name": "title"
+                    }
+                }
+            ],
+            "label": {
+                "id": 6,
+                "name": "title_episodeOfEdge_title"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 11,
+                        "name": "title"
+                    },
+                    "dst": {
+                        "id": 6,
+                        "name": "infoVertex"
+                    }
+                }
+            ],
+            "label": {
+                "id": 7,
+                "name": "title_infoEdge_infoVertex"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 11,
+                        "name": "title"
+                    },
+                    "dst": {
+                        "id": 7,
+                        "name": "infoIdxVertex"
+                    }
+                }
+            ],
+            "label": {
+                "id": 8,
+                "name": "title_infoEdge_infoIdxVertex"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 11,
+                        "name": "title"
+                    },
+                    "dst": {
+                        "id": 8,
+                        "name": "keyword"
+                    }
+                }
+            ],
+            "label": {
+                "id": 9,
+                "name": "title_keywordEdge_keyword"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 11,
+                        "name": "title"
+                    },
+                    "dst": {
+                        "id": 11,
+                        "name": "title"
+                    }
+                }
+            ],
+            "label": {
+                "id": 10,
+                "name": "title_linkTypeEdge_title"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 11,
+                        "name": "title"
+                    },
+                    "dst": {
+                        "id": 4,
+                        "name": "companyName"
+                    }
+                }
+            ],
+            "label": {
+                "id": 11,
+                "name": "title_movieCompanies_companyName"
+            }
+        },
+        {
+            "columns": [],
+            "entity_pairs": [
+                {
+                    "src": {
+                        "id": 9,
+                        "name": "person"
+                    },
+                    "dst": {
+                        "id": 10,
+                        "name": "personInfoVertex"
+                    }
+                }
+            ],
+            "label": {
+                "id": 12,
+                "name": "person_personInfoEdge_personInfoVertex"
+            }
+        }
+    ],
+    "is_column_id": false,
+    "is_table_id": true
+}
